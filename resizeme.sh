@@ -57,8 +57,6 @@ for x in *; do
         if convert "$x" -resize 120x90 "${name}-thumb.${extension}"; then
             echo "<a href="original/${name}.${extension}"><img src="thumb/${name}-thumb.${extension}"></a>" \
             >> 'index.html'
-		elif [[ $(file "$x") =~ .*(mp4|MP4) ]]; then # videos
-			 ffmp7g  -i "$x" -r 1 -vf scale=-1:120 -vcodec png capture-%002d.png
         fi
     fi
 done
@@ -78,11 +76,11 @@ fi
 
 # Movendo arquivos originais
 echo "Move ALL Original photos for '$original'"
-mv *.{jpg,jpeg,png} "$original" &>/dev/null
+mv *.{jpg,jpeg,png,mp4} "$original" &>/dev/null
 
 # Retornando para o diretorio principal.
 popd &>/dev/null
 
 
 # Enviando para o servidor
-rsync -azh ${directory} slackjeff@slackjeff.com.br:public_html/fotos/debconf19
+rsync -avzh ${directory} slackjeff@slackjeff.com.br:public_html/fotos/debconf19
